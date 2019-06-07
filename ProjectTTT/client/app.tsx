@@ -1,18 +1,30 @@
-﻿declare var require: any
-
-import React from 'react';
+﻿import React from 'react';
 import ReactDOM from 'react-dom';
-import Button from '@material-ui/core/Button';
+import Game from './game';
+import LobbyMenu from './lobbyMenu';
 
-export class Hello extends React.Component {
+const modeAuthentication = 0;
+const modeLobbyMenu = 1;
+const modeGame = 0;
+
+interface Props {  }
+interface State {
+    userName: string,
+    mode: number
+}
+
+export class App extends React.Component<Props, State> {
     constructor(props) {
         super(props);
+        this.state = {
+            userName: 'AirAce',
+            mode: modeLobbyMenu
+        };
     }
     render() {
-        return (
-            <Button variant="contained" color="primary">Hello World</Button>
-        );
+        if (this.state.mode == modeLobbyMenu)
+            return <LobbyMenu userName={this.state.userName} />;
     }
 }
 
-ReactDOM.render(<Hello />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

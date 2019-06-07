@@ -1,0 +1,43 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+
+.roomsList {
+    position: relative;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.roomsListCenter {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 32px 0px;
+}
+
+.recordsList {
+    position: relative;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.recordsListCenter {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 32px 0px;
+}
+
+.recordsListName {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recordsListName:clip {
+
+}
