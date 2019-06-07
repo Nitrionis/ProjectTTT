@@ -1,12 +1,16 @@
 ﻿declare var require: any
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Button from '@material-ui/core/Button';
 
 export class Hello extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     render() {
         return (
-            <h1>Disable dist folder!!</h1>
+            <Button variant="contained" color="primary">Hello World</Button>
         );
     }
 }
