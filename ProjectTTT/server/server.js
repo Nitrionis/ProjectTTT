@@ -232,11 +232,15 @@ io.on('connection', function (socket) {
                     if (socket == state.game.socketOne) {
                         state.game.socketOne.emit('gameOver', vicData);
                         state.game.socketTwo.emit('gameOver', defData);
+                        updateUserDataInBD(state.game.nameOne, true);
+                        updateUserDataInBD(state.game.nameTwo, false);
                     }
                     else {
                         state.game.socketTwo.emit('gameOver', vicData);
                         state.game.socketOne.emit('gameOver', defData);
-                    }   
+                        updateUserDataInBD(state.game.nameOne, false);
+                        updateUserDataInBD(state.game.nameTwo, true);
+                    }
                 }
                 if (res == 2) {
                     state.game.gameOver = true;
@@ -269,6 +273,8 @@ function disconnectGameOver(game, name) {
                 msgTop: 'CONGRATULATIONS',
                 msgBot: 'YOU WON'
             });
+            updateUserDataInBD(game.nameOne, false);
+            updateUserDataInBD(game.nameTwo, true);
             game.nameOne = null;
         }
     }
@@ -280,6 +286,8 @@ function disconnectGameOver(game, name) {
                 msgTop: 'CONGRATULATIONS',
                 msgBot: 'YOU WON'
             });
+            updateUserDataInBD(game.nameOne, true);
+            updateUserDataInBD(game.nameTwo, false);
             game.nameTwo = null;
         } 
     }
@@ -322,9 +330,24 @@ function checkLine(newGrid, startX, startY, dirX, dirY) {
     let res = [0, 0, 0];
     for (let x = startX, y = startY, i = 0; i < 3; i++, x += dirX, y += dirY)
         res[newGrid[x][y]]++;
-    if (res[0] != 0)
-        return 0;
     if (res[1] == 3 || res[2] == 3)
         return 1;
-    return 2;
+    if (res[1] != 0 && res[2] != 0)
+        return 2;
+    return 0;
+}
+
+function updateUserDataInBD(username, isWin) {
+    let sqlText;
+    if (isWin)
+        sqlText = "UPDATE users SET victories = victories + 1 WHERE name = ?";
+    else
+        sqlText = "UPDATE users SET defeats = defeats + 1 WHERE name = ?";
+    var params = [username];
+    db.run(sqlText, params, function (error) {
+        if (error)
+            console.error(error.message);
+        else
+            console.log("User update successfully ".concat(username));
+    });
 }

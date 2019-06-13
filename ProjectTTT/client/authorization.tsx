@@ -40,6 +40,9 @@ export default class Authorization extends React.Component<Props, State> {
         else
             return <RegistrationMenu toggleMode={this.toggleMode} close={this.props.close} />;
     }
+    componentDidMount = () => {
+        window.dispatchEvent(new Event('click'));
+    }
     render() {
         return (
             <div className='authorizationMainDiv'>
