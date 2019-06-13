@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import StarBorder from '@material-ui/icons/StarBorder';
 import TrashIcon from '@material-ui/icons/DeleteOutlined';
+import Axios from 'axios';
 
 const MainItem = styled(ListItem)({
     width: '100%',
@@ -83,14 +84,29 @@ class RecordsListItem extends React.Component<ItemProps, ItemState> {
 }
 
 interface ListProps { }
-interface ListState { data: ReadonlyArray<string> }
+interface ListState {
+    data: ReadonlyArray<{
+        name: string,
+        victories: number,
+        defeats: number
+    }>
+}
 
 export default class RecordsList extends React.Component<ListProps, ListState> {
     constructor(props) {
         super(props);
         this.state = {
-            data: ['Dimka', 'Lenka', 'Jojo', 'Hika', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
+            data: []
         };
+        this.updateData();
+    }
+    updateData = () => {
+        Axios.get(serverAddress + 'getRecords/', {}).then((res) => {
+            console.log('getRecords');
+            console.log(res.data);
+
+            this.setState({ data: res.data });
+        });
     }
     getListItems = () => {
         return this.state.data.map((v, i) => {
@@ -98,9 +114,9 @@ export default class RecordsList extends React.Component<ListProps, ListState> {
                 <RecordsListItem
                     key={i}
                     pos={i + 1}
-                    value={v}
-                    victories={0}
-                    defeats={0}
+                    value={v.name}
+                    victories={v.victories}
+                    defeats={v.defeats}
                 />
             );
         });

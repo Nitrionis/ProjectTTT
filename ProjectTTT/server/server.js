@@ -114,6 +114,16 @@ app.get('/getRooms', function (req, res) {
     res.send(roomsDict);
 });
 
+app.get('/getRecords', function (req, res) {
+    db.serialize(() => {
+        db.all("SELECT name, victories, defeats FROM users ORDER BY victories DESC", [], (err, rows) => {
+            if (err)
+                console.error(err.message);
+            res.send(rows);
+        });
+    });
+});
+
 app.post('/createRoom', function (req, res) {
     if (!(req.body.name in roomsDict)) {
         roomsDict[req.body.name] = {
