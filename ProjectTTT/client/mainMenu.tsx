@@ -19,6 +19,12 @@ const Head = styled(AppBar)({
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'
 });
 
+const Label = styled(Typography)({
+    fontWeight: 600,
+    fontStyle: 'italic'
+});
+
+
 interface Props {
     userName: string,
     leaveButtonText: string,
@@ -38,7 +44,7 @@ export default class MainMenu extends React.Component<Props, State> {
                         <IconButton edge="start" color="inherit" aria-label="Menu">
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant="h6">Tic Tac Toe</Typography>
+                        <Label variant="h6">Tic Tac Toe</Label>
                         {this.props.children}
                         <FreeSpace></FreeSpace>
                         <LeaveButton color="inherit" onClick={this.props.onLeave}>

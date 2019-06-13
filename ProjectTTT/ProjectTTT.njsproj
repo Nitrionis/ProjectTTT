@@ -31,11 +31,15 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="client\main.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="index.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="server\server.js" />
     <Content Include="package.json" />
+    <Content Include="server\serverTest.js" />
     <Content Include="tsconfig.json">
       <SubType>Code</SubType>
     </Content>
@@ -45,6 +49,33 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="client\app.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\authorization.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\game.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\gameMenu.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\lobbyMenu.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\mainMenu.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\recordsTable.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\roomsList.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\sharedInclude.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\Timer.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

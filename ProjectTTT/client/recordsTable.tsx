@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-
+import { serverAddress } from './sharedInclude';
 import { styled } from '@material-ui/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';

@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { serverAddress } from './sharedInclude';
 import { styled } from '@material-ui/styles';
 import MainMenu from './mainMenu';
 import RoomsList from './roomsList';
@@ -12,8 +13,13 @@ const NikeName = styled(Typography)({
     paddingRight: 32
 });
 
+const MainTab = styled(Tab)({
+    fontSize: '1em'
+});
+
 interface Props {
-    userName: string
+    userName: string,
+    openGame: (opponentName: string) => void
 }
 interface State {
     isRecordsActive: boolean,
@@ -24,7 +30,7 @@ export default class LobbyMenu extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-            isRecordsActive: true,
+            isRecordsActive: false,
             mode: 0
         };
     }
@@ -37,7 +43,7 @@ export default class LobbyMenu extends React.Component<Props, State> {
         if (this.state.isRecordsActive)
             return <RecordsList />;
         else
-            return <RoomsList />;
+            return <RoomsList userName={this.props.userName} loadGame={this.props.openGame} />;
     }
     onLeave = () => {
 
@@ -51,8 +57,8 @@ export default class LobbyMenu extends React.Component<Props, State> {
                 <MainMenu userName={this.props.userName} leaveButtonText='Sign out' onLeave={this.onLeave}>
                     <NikeName variant="h6">{this.props.userName}</NikeName>
                     <Tabs value={this.state.mode} onChange={this.handleChangeMode}>
-                        <Tab label="Rooms" />
-                        <Tab label="Records" />
+                        <MainTab label="Rooms" />
+                        <MainTab label="Records" />
                     </Tabs>
                 </MainMenu>
                 {this.getRecordsOrRooms()}

@@ -8,13 +8,25 @@
     max-width: 480px;
     width: 100%;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 16px;
 }
 
 .roomsListCenter {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     width: 100%;
     margin: 32px 0px;
+}
+
+.roomsListButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+.roomsListButton {
+    margin: 16px;
 }
 
 .recordsList {
@@ -38,6 +50,107 @@
     text-overflow: ellipsis;
 }
 
-.recordsListName:clip {
+.authorizationDiv {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 360px;
+    min-width: 320px;
+    padding: 8px 32px 16px;
+}
 
+.authorizationMainDiv {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    margin-top: -128px;
+}
+
+.authorizationSecondaryDiv {
+    position: relative;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.authorizationLabelDiv {
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+    border-radius: 8px 8px 0 0;
+}
+
+.authorizationLabelText {
+    font-family: "Roboto";
+    color: white;
+    font-weight: 600;
+    margin: 0;
+    font-size: 2.2em;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 100px;
+}
+
+.tableMainDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.gameTable {
+    margin: 64px 0;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+}
+
+.timerText {
+    font-family: "Roboto";
+    margin-left: 32px;
+    font-size: 1.2em;
+    color: white;
+    font-weight: 500;
+}
+
+.gameOverMainDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.gameOverModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    background-color: white;
+    padding: 0px 0px 32px;
+}
+
+.gameOverModalLabel {
+    background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+    border-radius: 8px 8px 0 0;
+    padding: 32px;
+    margin: 0px 0px 32px;
+}
+
+.gameOverModalText {
+    font-family: "Roboto";
+    color: white;
+    font-weight: 600;
+    margin: 0;
+    font-size: 2.2em;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 64px;
 }
