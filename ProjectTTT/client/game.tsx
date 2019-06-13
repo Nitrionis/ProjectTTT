@@ -27,7 +27,9 @@ interface State {
     opponentName: string,
     isGameOverModalOpen: boolean,
     msgTop: string,
-    msgBot: string
+    msgBot: string,
+    myFigure: string,
+    opponentFigure: string
 }
 
 export default class Game extends React.Component<Props, State> {
@@ -43,7 +45,9 @@ export default class Game extends React.Component<Props, State> {
             opponentName: '',
             isGameOverModalOpen: false,
             msgTop: '',
-            msgBot: ''
+            msgBot: '',
+            myFigure: this.props.opponentName == null ? 'X' : 'O',
+            opponentFigure: this.props.opponentName == null ? 'O' : 'X'
         };
         this.socket = io.connect(serverAddress);
         this.socket.emit('setupGame', {
@@ -76,9 +80,9 @@ export default class Game extends React.Component<Props, State> {
     }
     getTimerText = () => {
         if (this.state.isMyTurn)
-            return 'your turn';
+            return 'YOUR TURN ( ' + this.state.myFigure + ' )';
         else
-            return "opponent's turn";
+            return "OPPONENT'S TURN ( " + this.state.opponentFigure + ' )';
     }
     closeModal = () => {
         this.setState({ isGameOverModalOpen: false });
@@ -94,6 +98,12 @@ export default class Game extends React.Component<Props, State> {
             });
         }, 1000);
     }
+    updateTurn = (isMyTurn: boolean) => {
+        this.resetTimer();
+        this.setState({
+            isMyTurn: isMyTurn
+        });
+    }
     render() {
         return (
             <div>
@@ -101,9 +111,9 @@ export default class Game extends React.Component<Props, State> {
                     <NikeName variant="h6">{this.props.userName}</NikeName>
                     <NikeName variant="h6">{'vs'}</NikeName>
                     <NikeName variant="h6">{this.state.opponentName}</NikeName>
-                    <Timer text={this.getTimerText()} active={this.state.isTimerActive} startTime={60} reset={this.getResetFunction} />
+                    <Timer text={this.getTimerText()} active={this.state.isTimerActive} startTime={20} reset={this.getResetFunction} />
                 </MainMenu>
-                <GameGrid socket={this.socket} gameOver={this.gameOver} />
+                <GameGrid socket={this.socket} gameOver={this.gameOver} updateTurn={this.updateTurn} />
                 <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
@@ -127,7 +137,8 @@ export default class Game extends React.Component<Props, State> {
 
 interface GridProps {
     socket: any,
-    gameOver: (data: any) => void
+    gameOver: (data: any) => void,
+    updateTurn: (isMyTurn: boolean) => void
 }
 interface GridState { }
 
@@ -217,7 +228,7 @@ class GameGrid extends React.Component<GridProps, GridState> {
         this.clickCount = data.clickCount;
         this.drawDrid();
         this.drawSession();
-        console.log('clickCount' + this.clickCount);
+        this.props.updateTurn(data.isMyTurn);
     }
     getCanvasMousePos = (evt) => {
         var rect = this.canvas.current.getBoundingClientRect();

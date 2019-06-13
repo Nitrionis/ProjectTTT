@@ -158,6 +158,8 @@ io.on('connection', function (socket) {
             if (state.game.nameOne in roomsDict)
                 delete roomsDict[state.game.nameOne];
             disconnectGameOver(state.game, state.name);
+            if (state.game.timeoutId != null)
+                clearTimeout(state.game.timeoutId);
         }
     });
     socket.once('setupGame', function (data) {
@@ -179,6 +181,33 @@ io.on('connection', function (socket) {
                 state.game.socketTwo.emit('launchGame', {
                     opponentName: state.game.nameOne
                 });
+                state.game.timeoutId = setTimeout(function () {
+                    state.game.gameOver = true;
+                    var vicData = {
+                        grid: data.grid,
+                        clickCount: 0,
+                        msgTop: 'CONGRATULATIONS',
+                        msgBot: 'YOU WON :)'
+                    };
+                    var defData = {
+                        grid: data.grid,
+                        clickCount: 0,
+                        msgTop: 'DEFEAT',
+                        msgBot: ':('
+                    }
+                    if (state.game.nextSocket == state.game.socketOne) {
+                        state.game.socketTwo.emit('gameOver', vicData);
+                        state.game.socketOne.emit('gameOver', defData);
+                        updateUserDataInBD(state.game.nameOne, false);
+                        updateUserDataInBD(state.game.nameTwo, true);
+                    }
+                    else {
+                        state.game.socketOne.emit('gameOver', vicData);
+                        state.game.socketTwo.emit('gameOver', defData);
+                        updateUserDataInBD(state.game.nameOne, true);
+                        updateUserDataInBD(state.game.nameTwo, false);
+                    }
+                }, 20000);
             };
         }
         else {
@@ -193,7 +222,35 @@ io.on('connection', function (socket) {
     });
     socket.on('changeGrid', function (data) {
         if (state.opponentSocket != null && state.game.nextSocket == socket) {
-            console.log(data);
+            if (state.game.timeoutId != null)
+                clearTimeout(state.game.timeoutId);
+            state.game.timeoutId = setTimeout(function () {
+                state.game.gameOver = true;
+                var vicData = {
+                    grid: data.grid,
+                    clickCount: 0,
+                    msgTop: 'CONGRATULATIONS',
+                    msgBot: 'YOU WON :)'
+                };
+                var defData = {
+                    grid: data.grid,
+                    clickCount: 0,
+                    msgTop: 'DEFEAT',
+                    msgBot: ':('
+                }
+                if (state.game.nextSocket == state.game.socketOne) {
+                    state.game.socketTwo.emit('gameOver', vicData);
+                    state.game.socketOne.emit('gameOver', defData);
+                    updateUserDataInBD(state.game.nameOne, false);
+                    updateUserDataInBD(state.game.nameTwo, true);
+                }
+                else {
+                    state.game.socketOne.emit('gameOver', vicData);
+                    state.game.socketTwo.emit('gameOver', defData);
+                    updateUserDataInBD(state.game.nameOne, true);
+                    updateUserDataInBD(state.game.nameTwo, false);
+                }
+            }, 20000);
             if (checkGrid(state.game.grid, data.grid)) {
                 // check next socket
                 let res = checkWin(data.grid);
@@ -203,13 +260,16 @@ io.on('connection', function (socket) {
                 state.game.clickCount++;
 
                 if (res == 0) {
-                    var data = {
+                    state.game.socketOne.emit('updateGrid', {
                         grid: data.grid,
-                        clickCount: state.game.clickCount
-                    };
-                    state.game.socketOne.emit('updateGrid', data);
-                    state.game.socketTwo.emit('updateGrid', data);
-
+                        clickCount: state.game.clickCount,
+                        isMyTurn: socket == state.game.socketOne ? false : true
+                    });
+                    state.game.socketTwo.emit('updateGrid', {
+                        grid: data.grid,
+                        clickCount: state.game.clickCount,
+                        isMyTurn: socket == state.game.socketOne ? true : false
+                    });
                     if (socket == state.game.socketOne)
                         state.game.nextSocket = state.game.socketTwo;
                     else

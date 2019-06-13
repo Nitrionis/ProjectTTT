@@ -41,9 +41,6 @@ export default class MainMenu extends React.Component<Props, State> {
             <div>
                 <Head position="static">
                     <Toolbar>
-                        <IconButton edge="start" color="inherit" aria-label="Menu">
-                            <MenuIcon />
-                        </IconButton>
                         <Label variant="h6">Tic Tac Toe</Label>
                         {this.props.children}
                         <FreeSpace></FreeSpace>
